@@ -121,9 +121,29 @@
                 buttons: ['excel', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
-                    pageSize: 'A2',
-                    title: 'Reporte ',
-   
+                    pageSize: 'A3',
+                    title: function() {
+                var year = $('#yearSelector').val();
+                var month = $('#monthSelector').val();
+                var monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                return 'Reporte de Asistencias - ' + monthNames[month - 1] + ' ' + year;
+            },
+                                customize: function (doc) {
+                // Ajustar el ancho de las columnas
+                doc.content[1].table.widths = [36, 38, 43, ...Array(33).fill(23)]; // Ajusta los valores según tus necesidades
+                // Reducir márgenes
+                doc.pageMargins = [15, 15, 15, 15];
+                doc.styles.tableHeader.fontSize = 8; // Tamaño de fuente para los encabezados de la tabla
+                doc.defaultStyle.fontSize = 8; // Tamaño de fuente para el contenido de la tabla
+                var objLayout = {};
+                objLayout['hLineWidth'] = function(i) { return 0.5; };
+                objLayout['vLineWidth'] = function(i) { return 0.5; };
+                objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                objLayout['paddingLeft'] = function(i) { return 4; };
+                objLayout['paddingRight'] = function(i) { return 4; };
+                doc.content[1].layout = objLayout;
+            }
                 }
             ]
             }
