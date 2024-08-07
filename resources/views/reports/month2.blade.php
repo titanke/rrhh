@@ -95,7 +95,8 @@
         language: { "processing": '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>' },
         serverSide: true,
         ajax: 'getMonth2/'+$('#monthSelector').val()+'/'+$('#yearSelector').val(),
-        columns: [            
+        columns: [ 
+           
             { data: 'regimen', name: 'regimen', orderable: false},
             { data: 'dni', name: 'dni', orderable: false},
             { data: 'name', name: 'name'},
@@ -199,20 +200,23 @@
                 return evaluador(data, row.anio, row.mes, 33);
             }}
         ],
+        
         order: [[2, 'asc']],
         columnDefs: [{
             targets: 1,
             className: 'dt-right'
         }],
+
         layout: {
-        topStart: {
+        top2Start: {
             buttons: ['excel', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     pageSize: 'LEGAL'
                 }]
             }
-        }
+        }  
+
     });
 
 function recargarReporte(){
@@ -240,7 +244,21 @@ function evaluador(attendancesList, year, month, day){
     }
 
     if(dayEvaluation.getDay() == 0 || dayEvaluation.getDay() == 6){
-        return "<span class='text-warning font-weight-bold'>A</span>";
+        if(attencancesDay.length >= 4){
+        return "<span class='text-primary font-weight-bold' title='"+attencancesDay+"'>A</span>";
+    }else{
+        if(attencancesDay.length>0){
+            return "<span class='text-danger font-weight-bold' title='"+attencancesDay+"'>F*</span>";
+        }
+        else{
+            if(dayEvaluation.getDay() == 0){
+            return "<span class='text-primary font-weight-bold' title='"+attencancesDay+"'>D</span>";
+        }
+        else{
+            return "<span class='text-primary font-weight-bold' title='"+attencancesDay+"'>S</span>";
+        }
+        }
+    }
     }
     if(attencancesDay.length >= 4){
         return "<span class='text-primary font-weight-bold' title='"+attencancesDay+"'>A</span>";
