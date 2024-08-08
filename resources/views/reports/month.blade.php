@@ -98,7 +98,7 @@ $(function() {
             buttons: ['excel', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
-                    pageSize: 'LEGAL'
+                    pageSize: 'A4'
                 }]
             }
         }  
