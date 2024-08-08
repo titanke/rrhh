@@ -7,16 +7,18 @@
       <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Asistencia mensual</h6>
-          <div class="form-inline">
+       
+        </div>
+        <div class="card-body">
+        <div class="form-inline">
             <label for="startDate">Desde: </label>
             <input type="date" class="form-control mr-2" id="startDate" name="startDate" required>
             <label for="endDate">Hasta: </label>
-            <input type="date" class="form-control" id="endDate" name="endDate" required>
-            <input type="text" class="form-control" id="dni" name="dni" required>
+            <input type="date" class="form-control mr-2" id="endDate" name="endDate" required>
+            <label for="endDate">DNI: </label>
+            <input type="text" class="form-control mr-2" id="dni" name="dni" required>
             <button type="button" class="btn btn-primary" id="filterButton">Filtrar</button>
           </div>
-        </div>
-        <div class="card-body">
           <table class="table table-bordered table-striped" id="events-table">
             <thead>
               <tr>
@@ -60,7 +62,7 @@ $(function() {
     order: [[1, 'asc']],
     columnDefs: [{ targets: 1, className: 'dt-right' }],
             layout: {
-        top2Start: {
+        topEnd: {
             buttons: ['excel', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
