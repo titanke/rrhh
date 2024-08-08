@@ -75,34 +75,6 @@ $(function() {
   $('#filterButton').click(function() {
     table.ajax.reload(); 
   });
-    $('#events-table').DataTable({
-        processing: true,
-        language: { "processing": '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>' },
-        serverSide: true,
-        ajax: 'getMonth',
-        columns: [
-            { data: 'fecha', name: 'fecha', orderable: false, searchable: false},
-            { data: 'regimen', name: 'regimen'},
-            { data: 'dni', name: 'dni'},
-            { data: 'name', name: 'name'},
-            { data: 'marcas', name: 'marcas', orderable: false, searchable: false}
-
-        ],
-        order: [[1, 'asc']],
-        columnDefs: [{
-            targets: 1,
-            className: 'dt-right'
-        }],
-        layout: {
-        top2Start: {
-            buttons: ['excel', {
-                    extend: 'pdfHtml5',
-                    orientation: 'portrait',
-                    pageSize: 'A4'
-                }]
-            }
-        }  
-    });
 });
 </script>
 
