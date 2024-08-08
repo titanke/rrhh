@@ -252,10 +252,10 @@ function evaluador(attendancesList, year, month, day){
         }
         else{
             if(dayEvaluation.getDay() == 0){
-            return "<span class='text-primary font-weight-bold' title='"+attencancesDay+"'>D</span>";
+            return "<span class='text-info font-weight-bold' title='"+attencancesDay+"'>D</span>";
         }
         else{
-            return "<span class='text-primary font-weight-bold' title='"+attencancesDay+"'>S</span>";
+            return "<span class='text-info font-weight-bold' title='"+attencancesDay+"'>S</span>";
         }
         }
     }

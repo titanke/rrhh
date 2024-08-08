@@ -124,6 +124,7 @@ $('#guardar_justificacion').click( function() {
         $.post( "{{route('justificaciones.store')}}", $('#formJustificacion').serialize(), function(data) {
             tablaJustificaciones.ajax.url('getJustificaciones').load();
             $('#newJustificacionModal').modal('hide');
+            location.reload();
             $(':input','#formJustificacion')
             .not(':button, :submit, :reset')
             .val('');

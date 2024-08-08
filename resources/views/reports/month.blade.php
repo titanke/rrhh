@@ -48,7 +48,16 @@ $(function() {
         columnDefs: [{
             targets: 1,
             className: 'dt-right'
-        }]
+        }],
+        layout: {
+        top2Start: {
+            buttons: ['excel', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    pageSize: 'LEGAL'
+                }]
+            }
+        }  
     });
 });
 </script>

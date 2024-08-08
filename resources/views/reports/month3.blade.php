@@ -200,11 +200,11 @@ function evaluador(attendancesList, year, month, day){
             }
             else{
                 if(dayEvaluation.getDay() == 0){
-                    return "<span class='text-primary font-weight-bold'>D</span>";
+                    return "<span class='text-info font-weight-bold'>D</span>";
 
             }
             else{
-                return "<span class='text-primary font-weight-bold'>S</span>";
+                return "<span class='text-info font-weight-bold'>S</span>";
             }        
         }
     }
