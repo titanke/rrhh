@@ -219,19 +219,24 @@ class AttendanceController extends Controller
 
     public function getMonth(Request $request)
     {
-        $data = DB::select('SELECT 
-            e.dni,
-            DATE(a.timestamp) fecha,
-            CONCAT(e.plastname," ",e.mlastname,", ",e.name) name,
-            e.regimen, 
-            IFNULL(GROUP_CONCAT(TIME(a.TIMESTAMP) SEPARATOR ", "), 0) marcas
-        FROM employees AS e
-        LEFT JOIN attendances AS a ON (CAST(e.dni AS UNSIGNED) = CAST(a.id AS UNSIGNED) AND MONTH(a.TIMESTAMP) = "02" AND YEAR(a.TIMESTAMP) = "2024")
-                   
-        GROUP BY e.dni, DATE(a.TIMESTAMP),e.plastname, e.mlastname, e.name, e.regimen');
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+        $dni = $request->input('dni');
 
-        return Datatables::of($data)->make(true);
-    }
+    $data = DB::select('SELECT 
+        e.dni,
+        DATE(a.timestamp) fecha,
+        CONCAT(e.plastname," ",e.mlastname,", ",e.name) name,
+        e.regimen, 
+        IFNULL(GROUP_CONCAT(TIME(a.TIMESTAMP) SEPARATOR ", "), 0) marcas
+    FROM employees AS e 
+    LEFT JOIN attendances AS a ON (CAST(e.dni AS UNSIGNED) = CAST(a.id AS UNSIGNED) AND DATE(a.TIMESTAMP) BETWEEN "'.$startDate.'" AND "'.$endDate.'")
+    WHERE e.dni = "'.$dni.'"
+    GROUP BY e.dni, DATE(a.TIMESTAMP),e.plastname, e.mlastname, e.name, e.regimen');
+    return Datatables::of($data)->make(true);
+}
+
+
 
     public function month2(Request $request){
         return view('reports.month2');
