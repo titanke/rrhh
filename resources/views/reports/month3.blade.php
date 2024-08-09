@@ -41,7 +41,7 @@
                     
                     <table class="table table-bordered table-striped" id="summary-table" style="font-size: 0.5em;">
                         <thead>                        
-                            <tr>                                
+                            <tr>  
                                 <th>Reg.</th>
                                 <th>DNI</th>
                                 <th>Apellidos y Nombres</th>
@@ -76,8 +76,8 @@
                                 <th>29</th>
                                 <th>30</th>
                                 <th>31</th>
-                                <th>A</th>
-                                <th>F</th>
+                                <th>Min</th>
+                                <th>Obs</th>
                             </tr>
                         </thead>
                     </table>
@@ -161,23 +161,14 @@ function recargarReporte(){
     tablaReporte.ajax.url('getMonth2/'+$('#monthSelector').val()+'/'+$('#yearSelector').val()).load();
 }
 
-function hoursToMinutes(hours) {
-    return hours * 60;
-}
 
 
-// Rangos horarios en minutos
-
-const afternoonStart = hoursToMinutes(14.5);
-const afternoonEnd = hoursToMinutes(15);
-
-// Función para calcular los minutos totales dentro de un rango
-
-// Calcular minutos totales para cada rango
 
 function evaluador(attendancesList, year, month, day) {
   const attendances = attendancesList.split(",");
   const attendancesDay = [];
+  const attendancesDayObs = [];
+
   var dayEvaluation = new Date(year, month - 1, day);
 
 
@@ -190,24 +181,39 @@ function evaluador(attendancesList, year, month, day) {
         attendances.forEach(attendance => {
         const timestamp = new Date(attendance);
         const hours = timestamp.getHours();
-        const minutes = timestamp.getMinutes();
+        const minutes = timestamp.getMinutes(); 
+        const rango1Limite = 10;
+        const rango2Limite = 5;
+        if (hours === 8 && minutes >0) {
+          totalMinutes += Math.min(minutes , rango1Limite);
+        }
 
-        if (hours >= 8 && hours < 9 ) {
-            if (minutes > 10) {
-                totalMinutes += minutes-10;
-                }
-            } else {
-                if (hours >= 14 && hours < 16 ) {
-                    if (minutes > 30) {
-                totalMinutes += minutes-30;
-                }
-                }
-            }
+        if (hours === 14 && minutes >30) {
+          totalMinutes += Math.min(minutes - 30, rango2Limite);
+        }
 
-            
-        });
+        }
+      );
 
     return `<b> ${totalMinutes}</b>`;
+    }
+    if (day === parseInt(33)) {
+      const diasConMasAsistencias = [];
+        for (let d = 1; d <= 31; d++) {
+          let count = 0;
+          attendances.forEach(function (fecha) {
+            const date = new Date(fecha);
+            if (date.getDate() === d) {
+              count++;
+            }
+          });
+          if (count > 4) {
+            diasConMasAsistencias.push(d);
+          }
+        }
+        if (diasConMasAsistencias.length >= 1) {
+          return "<span class='text-danger'>*</span>";
+        }
     }
 
 
@@ -246,6 +252,7 @@ function evaluador(attendancesList, year, month, day) {
       }
     }
   }
+
 
   if (attendancesDay.length >= 4) {
     var str = "";

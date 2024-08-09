@@ -65,9 +65,27 @@ $(function() {
         topEnd: {
             buttons: ['excel', {
                     extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    pageSize: 'LEGAL'
-                }]
+                    orientation: 'portrait',
+                    pageSize: 'LEGAL',
+                    customize: function (doc) {
+                            var startDate = $('#startDate').val();
+                            var endDate = $('#endDate').val();
+
+                            doc.content[0] = {
+                                columns: [
+                    
+                            {
+                                text: startDate + ' ' + endDate,
+                            alignment: 'center'
+                            }
+                        ],
+                        };
+                     
+                    }
+                },
+                    
+              
+              ]
             }
         }
   });
