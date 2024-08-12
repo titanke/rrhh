@@ -37,4 +37,11 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    public function authenticated(Request $request, $user)
+    {
+        $user->update([
+            'periodo' => $request->periodo
+        ]);
+    }
+
 }

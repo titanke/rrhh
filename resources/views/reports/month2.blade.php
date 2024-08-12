@@ -13,6 +13,7 @@
                         <div class="col-2">
                             <select class="form-control form-control-solid" id="yearSelector">
                                 <option value='2024'>2024</option>
+                                <option value='2023'>2023</option>
                             </select>
                         </div>
                         <div class="col-2">
@@ -265,11 +266,11 @@ function evaluador(attendancesList, year, month, day){
               count++;
             }
           });
-          if (count > 4) {
+          if (count > 4 || count == 2) {
             diasConMasAsistencias.push(d);
           }
         }
-        if (diasConMasAsistencias.length >= 1) {
+        if (diasConMasAsistencias.length >= 1  ) {
           return "<span class='text-danger'>*</span>";
         }
     }

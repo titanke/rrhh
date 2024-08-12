@@ -234,7 +234,7 @@ class AttendanceController extends Controller
     WHERE e.dni = "'.$dni.'"
     GROUP BY e.dni, DATE(a.TIMESTAMP),e.plastname, e.mlastname, e.name, e.regimen');
     return Datatables::of($data)->make(true);
-}
+    }
 
 
 

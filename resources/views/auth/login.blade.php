@@ -55,6 +55,12 @@
                                             <input type="password" class="form-control form-control-user"
                                                 id="password" name="password" placeholder="Contraseña">
                                         </div>
+                                        <div class="form-group">
+                                            <select class="form-control form-control-user" id="periodo" name="periodo" placeholder="Año" required>                                                
+                                                <option value="2024">2024</option>
+                                                <option value="2023">2023</option>
+                                            </select>
+                                        </div>
                                         
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Iniciar sesión
