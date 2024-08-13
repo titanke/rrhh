@@ -234,44 +234,38 @@ function evaluador(attendancesList, year, month, day){
         return "";
     }
 
-    if (day === parseInt(32)) {
-    let totalMinutes = 0; 
+    let totalMinutes = 0;
+    const diasConMasAsistencias = new Array(31).fill(0);
 
-        attendances.forEach(attendance => {
+    attendances.forEach(attendance => {
         const timestamp = new Date(attendance);
         const hours = timestamp.getHours();
-        const minutes = timestamp.getMinutes(); 
+        const minutes = timestamp.getMinutes();
+        const dayOfMonth = timestamp.getDate();
         const rango1Limite = 10;
         const rango2Limite = 5;
-        if (hours === 8 && minutes >0) {
-          totalMinutes += Math.min(minutes , rango1Limite);
-        }
 
-        if (hours === 14 && minutes >30) {
-          totalMinutes += Math.min(minutes - 30, rango2Limite);
-        }
-
-        }
-      );
-
-    return `<b> ${totalMinutes}</b>`;
-    }
-    if (day === parseInt(33)) {
-      const diasConMasAsistencias = [];
-        for (let d = 1; d <= 31; d++) {
-          let count = 0;
-          attendances.forEach(function (fecha) {
-            const date = new Date(fecha);
-            if (date.getDate() === d) {
-              count++;
+        if (day === 32) {
+            if (hours === 8 && minutes > 0) {
+                totalMinutes += Math.min(minutes, rango1Limite);
             }
-          });
-          if (count > 4 || count == 2) {
-            diasConMasAsistencias.push(d);
-          }
+            if (hours === 14 && minutes > 30) {
+                totalMinutes += Math.min(minutes - 30, rango2Limite);
+            }
         }
-        if (diasConMasAsistencias.length >= 1  ) {
-          return "<span class='text-danger'>*</span>";
+        if (day === 33) {
+            diasConMasAsistencias[dayOfMonth - 1]++;
+        }
+    });
+
+    if (day === 32) {
+        return `<b>${totalMinutes}</b>`;
+    }
+
+    if (day === 33) {
+        const diasConMasAsistenciasFiltrados = diasConMasAsistencias.filter(count => count > 4 || count === 2);
+        if (diasConMasAsistenciasFiltrados.length >= 1) {
+            return "<span class='text-danger'>*</span>";
         }
     }
 

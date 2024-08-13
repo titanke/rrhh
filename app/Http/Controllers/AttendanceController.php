@@ -11,6 +11,7 @@ use Yajra\Datatables\Datatables;
 use App\Models\Employee;
 use App\Models\Justificacion;
 use App\Models\Schedule;
+use Illuminate\Support\Facades\Cache;
 
 use DateTime;
 use DateTimeZone;
@@ -243,30 +244,31 @@ class AttendanceController extends Controller
     }
 
 
-    public function getMonth2(Request $request){
-
+    public function getMonth2(Request $request)
+    {
         $year = $request->anio;
         $month = $request->mes;
-
-        //echo $year; exit;
-        
-        $data = DB::select('SELECT 
-            e.dni,
-            CONCAT(e.plastname," ",e.mlastname,", ",e.name) name,
-            e.regimen,
-            "'.$year.'" anio,
-            "'.$month.'" mes,
-            IFNULL(GROUP_CONCAT(a.TIMESTAMP SEPARATOR ","), "") marcas            
-        FROM employees AS e
-        LEFT JOIN attendances AS a 
-            ON (
-                CAST(e.dni AS UNSIGNED) = CAST(a.id AS UNSIGNED) 
-                AND MONTH(a.TIMESTAMP) = "'.$month.'" 
-                AND YEAR(a.TIMESTAMP) = "'.$year.'")            
-        GROUP BY e.dni,e.plastname, e.mlastname, e.name, e.regimen');
-
+    
+        $cacheKey = "attendance_{$year}_{$month}";
+    
+        $data = Cache::remember($cacheKey, 60, function () use ($year, $month) {
+            return DB::select('SELECT 
+                e.dni,
+                CONCAT(e.plastname," ",e.mlastname,", ",e.name) name,
+                e.regimen,
+                "'.$year.'" anio,
+                "'.$month.'" mes,
+                IFNULL(GROUP_CONCAT(a.TIMESTAMP SEPARATOR ","), "") marcas            
+            FROM employees AS e
+            LEFT JOIN attendances AS a 
+                ON (
+                    CAST(e.dni AS UNSIGNED) = CAST(a.id AS UNSIGNED) 
+                    AND MONTH(a.TIMESTAMP) = "'.$month.'" 
+                    AND YEAR(a.TIMESTAMP) = "'.$year.'")            
+            GROUP BY e.dni, e.plastname, e.mlastname, e.name, e.regimen');
+        });
+    
         return Datatables::of($data)->make(true);
-        
     }
 
     public function month3(Request $request){
