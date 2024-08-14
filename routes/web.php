@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('vacaciones', VacacionesController::class);
     Route::resource('justificaciones', JustificacionController::class);
 
+    Route::post('storeCom', [JustificacionController::class, 'storeCom'])->name('storeCom');
     Route::get('getVacaciones', [VacacionesController::class, 'getVacaciones'])->name('getVacaciones');
     Route::get('getJustificaciones', [JustificacionController::class, 'getJustificaciones'])->name('getJustificaciones');
 

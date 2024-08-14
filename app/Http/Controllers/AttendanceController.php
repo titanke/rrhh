@@ -130,6 +130,26 @@ class AttendanceController extends Controller
 
     }
 
+    public static function insertJustificacion2($id_empleado, $fecha_inicio, $fecha_final, $id){
+        $empleado = Employee::find($id_empleado);
+        $horario = Schedule::find(1);
+
+        for($fi = new DateTime($fecha_inicio); $fi <= new DateTime($fecha_final); $fi->add(new DateInterval('P1D'))) {
+            $ha = Attendance::create(
+                ['id' => intval($empleado->dni),
+                'state' => '55', 
+                'timestamp' => $fi->format('Y-m-d').' 08:00:00',
+                'type' => $id,
+                'reloj' => 'JUSTIFICAC']);
+            $hd = Attendance::create(
+                ['id' => intval($empleado->dni),
+                'state' => '55',
+                'timestamp' => $fi->format('Y-m-d').' 17:30:00',
+                'type' => $id,
+                'reloj' => 'JUSTIFICAC']);
+        }
+    }
+    
     public static function insertVacaciones($id_empleado, $fecha_inicio, $fecha_final, $idVacacion){
         $empleado = Employee::find($id_empleado);
 

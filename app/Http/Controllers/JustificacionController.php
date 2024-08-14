@@ -46,7 +46,30 @@ class JustificacionController extends Controller
         $j = Justificacion::create($request->all());
 
         $insertJustificacion = AttendanceController::insertJustificacion($j);
+
+        return json_encode($j);
+    }
+
+    public function storeCom(Request $request)
+    {
+        request()->validate([
+            'id_employee2' => 'required',
+            'fecha2' => 'required',
+            'justificacion2' => 'required',
+        ]);
+
+        $data = [
+            'id_employee' => $request->id_employee2,
+            'justificacion' => $request->justificacion2,
+            'fecha' => $request->fecha2,
+            'hora_inicio' => '08:00:00',
+            'hora_final' => '17:30:00',
+        ];
     
+    $j = Justificacion::create($data);
+
+        $insertJustificacion = AttendanceController::insertJustificacion2($j->id_employee, $request->fecha2, $request->fecha_final2, $j->id);
+
         return json_encode($j);
     }
 

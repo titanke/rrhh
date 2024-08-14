@@ -14,6 +14,11 @@
                             <button class='btn btn-primary' data-toggle="modal" data-target="#newJustificacionModal"><i class='fas fa-plus-circle'></i> Nuevo</button>
                         </div>
                     </div>
+                    <div class='row'>
+                        <div class='col-12'>
+                            <button class='btn btn-primary' data-toggle="modal" data-target="#newJustificacionModalPF"><i class='fas fa-plus-circle'></i> Nuevo por Fechas</button>
+                        </div>
+                    </div>
                     <hr/>
                     <table class="table table-bordered table-striped" id="justificaciones-table">
                         <thead>
@@ -55,6 +60,28 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="newJustificacionModalPF" tabindex="-1" role="dialog" aria-labelledby="newJustificacionModalPFLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newJustificacionModalPFLabel">Registrar Justificación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      @include('justificaciones.form_newjustperdates')
+      <div id="message2"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" id="guardar_justificacionPF">Justificar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @stop
 
 @push('scripts')
@@ -86,6 +113,26 @@ var tablaJustificaciones= $('#justificaciones-table').DataTable({
         
     });
 
+    $('#buscarEmpleado2').click(function(){
+    var dni = $('#dni2').val();
+    if(dni.length == 8){
+        $.ajax({
+            url: "buscarEmpleado/"+dni,
+            cache: false,
+            success: function(data){
+                data = $.parseJSON(data);
+                if(data != null){
+                    $('#id_employee2').val(data.id);
+                    $('#nombres_apellidos2').html("<div class='alert alert-success' role='alert'>"+data.name+" "+data.plastname+" "+data.mlastname+"</div>");
+                    $('#message2').html('');
+                }else{
+                    $('#message2').html('<br/><div class="alert alert-danger" role="alert">No se encuentra a personal.</div>')
+                }
+            }
+        });
+    }
+});
+
 $('#buscarEmpleado').click(function(){
     var dni = $('#dni').val();
     if(dni.length == 8){
@@ -105,6 +152,7 @@ $('#buscarEmpleado').click(function(){
         });
     }
 });
+
 
 $('#guardar_justificacion').click( function() {
     if($('#id_employee').val() == ""){
@@ -130,6 +178,32 @@ $('#guardar_justificacion').click( function() {
             .val('');
             $('#nombres_apellidos').html('<br/>');
             $('#message').html('');
+        },
+        'json'
+        );
+    }
+});
+
+    $('#guardar_justificacionPF').click( function() {
+    if($('#id_employee2').val() == ""){
+        $('#message2').html('<br/><div class="alert alert-danger" role="alert">No se ha identificado al personal.</div>')
+    }else if($('#fecha2').val() == ""){
+        $('#message2').html('<br/><div class="alert alert-warning" role="alert">Se require la fecha de Justificación.</div>');
+    }else if($('#fecha_final2').val() == ""){
+        $('#message2').html('<br/><div class="alert alert-warning" role="alert">Se require fecha de retorno.</div>')
+    }else if($('#justificacion2').val() == ""){
+        $('#message2').html('<br/><div class="alert alert-warning" role="alert">Se require la justificacion.</div>')
+    }else{
+        $('#message2').html('');
+        $.post( "{{route('storeCom')}}", $('#formJustificacion2').serialize(), function(data) {
+            tablaJustificaciones.ajax.url('getJustificaciones').load();
+            $('#newJustificacionModalPF').modal('hide');
+            location.reload();
+            $(':input','#formJustificacion2')
+            .not(':button, :submit, :reset')
+            .val('');
+            $('#nombres_apellidos2').html('<br/>');
+            $('#message2').html('');
         },
         'json'
         );
