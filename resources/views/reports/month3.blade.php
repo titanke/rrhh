@@ -95,6 +95,7 @@
 
     var tablaReporte = $('#summary-table').DataTable({
         processing: true,
+        scrollX: true, 
         language: { "processing": '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>' },
         serverSide: true,
         ajax: 'getMonth2/'+$('#monthSelector').val()+'/'+$('#yearSelector').val(),

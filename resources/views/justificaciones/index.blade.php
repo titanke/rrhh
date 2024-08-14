@@ -9,16 +9,13 @@
                     <h6 class="m-0 font-weight-bold text-primary">Justificaciones</h6>
                 </div>
                 <div class="card-body">
-                    <div class='row'>
-                        <div class='col-12'>
-                            <button class='btn btn-primary' data-toggle="modal" data-target="#newJustificacionModal"><i class='fas fa-plus-circle'></i> Nuevo</button>
-                        </div>
+                <div class='row'>
+                    <div class='col-12 d-flex justify-content-start'>
+                        <button class='btn btn-primary' data-toggle="modal" data-target="#newJustificacionModal"><i class='fas fa-plus-circle'></i> Nuevo</button>
+                        <button class='btn btn-primary ml-2' data-toggle="modal" data-target="#newJustificacionModalPF"><i class='fas fa-plus-circle'></i> Nuevo por Fechas</button>
                     </div>
-                    <div class='row'>
-                        <div class='col-12'>
-                            <button class='btn btn-primary' data-toggle="modal" data-target="#newJustificacionModalPF"><i class='fas fa-plus-circle'></i> Nuevo por Fechas</button>
-                        </div>
-                    </div>
+                </div>
+
                     <hr/>
                     <table class="table table-bordered table-striped" id="justificaciones-table">
                         <thead>
@@ -163,7 +160,7 @@ $('#guardar_justificacion').click( function() {
         $('#message').html('<br/><div class="alert alert-warning" role="alert">Se require hora de inicio.</div>')
     }else if($('#hora_final').val() == ""){
         $('#message').html('<br/><div class="alert alert-warning" role="alert">Se require hora final.</div>')
-    }else if(Date.parse('01/01/2000 '+$('#hora_final').val()) <= Date.parse('01/01/2000 '+$('#hora_inicio').val())){
+    }else if(Date.parse('01/01/2000'+$('#hora_final').val()) <= Date.parse('01/01/2000'+$('#hora_inicio').val())){
         $('#message').html('<br/><div class="alert alert-warning" role="alert">La hora de fin debe ser mayor a la hora de inicio.</div>')
     }else if($('#justificacion').val() == ""){
         $('#message').html('<br/><div class="alert alert-warning" role="alert">Se require la justificacion.</div>')
@@ -191,6 +188,8 @@ $('#guardar_justificacion').click( function() {
         $('#message2').html('<br/><div class="alert alert-warning" role="alert">Se require la fecha de Justificación.</div>');
     }else if($('#fecha_final2').val() == ""){
         $('#message2').html('<br/><div class="alert alert-warning" role="alert">Se require fecha de retorno.</div>')
+    }else if(Date.parse($('#fecha_final2').val() + 'T08:00:00') <= Date.parse($('#fecha2').val() + 'T08:00:00')){
+        $('#message').html('<br/><div class="alert alert-warning" role="alert">La fecha de fin debe ser mayor a la fecha de inicio.</div>')
     }else if($('#justificacion2').val() == ""){
         $('#message2').html('<br/><div class="alert alert-warning" role="alert">Se require la justificacion.</div>')
     }else{

@@ -92,6 +92,8 @@
 
 <script>
     var tablaReporte = $('#summary-table').DataTable({
+        responsive: true,
+        scrollX: true, 
         processing: true,
         language: { "processing": '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>' },
         serverSide: true,
