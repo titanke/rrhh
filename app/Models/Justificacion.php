@@ -15,6 +15,7 @@ class Justificacion extends Model
         'id_employee',
         'justificacion',
         'fecha',
+        'fecha_final',
         'hora_inicio',
         'hora_final'
     ];

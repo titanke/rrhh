@@ -257,22 +257,17 @@ class AttendanceController extends Controller
     return Datatables::of($data)->make(true);
     }
 
-
-
     public function month2(Request $request){
         return view('reports.month2');
     }
-
 
     public function getMonth2(Request $request)
     {
         $year = $request->anio;
         $month = $request->mes;
     
-        $cacheKey = "attendance_{$year}_{$month}";
     
-        $data = Cache::remember($cacheKey, 60, function () use ($year, $month) {
-            return DB::select('SELECT 
+        $data = DB::select('SELECT 
                 e.dni,
                 CONCAT(e.plastname," ",e.mlastname,", ",e.name) name,
                 e.regimen,
@@ -286,7 +281,6 @@ class AttendanceController extends Controller
                     AND MONTH(a.TIMESTAMP) = "'.$month.'" 
                     AND YEAR(a.TIMESTAMP) = "'.$year.'")            
             GROUP BY e.dni, e.plastname, e.mlastname, e.name, e.regimen');
-        });
     
         return Datatables::of($data)->make(true);
     }

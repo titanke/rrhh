@@ -43,7 +43,16 @@ class JustificacionController extends Controller
             'justificacion' => 'required',
         ]);
     
-        $j = Justificacion::create($request->all());
+        $data = [
+            'id_employee' => $request->id_employee,
+            'fecha' => $request->fecha,
+            'fecha_final' => $request->fecha,
+            'hora_inicio' => $request->hora_inicio,
+            'hora_final' => $request->hora_final,
+            'justificacion' => $request->justificacion,
+        ];
+
+        $j = Justificacion::create($data);
 
         $insertJustificacion = AttendanceController::insertJustificacion($j);
 
@@ -62,6 +71,7 @@ class JustificacionController extends Controller
             'id_employee' => $request->id_employee2,
             'justificacion' => $request->justificacion2,
             'fecha' => $request->fecha2,
+            'fecha_final' => $request->fecha_final2,
             'hora_inicio' => '08:00:00',
             'hora_final' => '17:30:00',
         ];
@@ -113,6 +123,7 @@ class JustificacionController extends Controller
             CONCAT(e.plastname," ",e.mlastname, " ",e.name) as empleado, 
             j.justificacion, 
             j.fecha,
+            j.fecha_final,
             j.hora_inicio,
             j.hora_final
         FROM justificaciones AS j

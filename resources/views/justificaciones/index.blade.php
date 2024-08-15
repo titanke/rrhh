@@ -23,7 +23,8 @@
                                 <th>DNI</th>
                                 <th>Apellidos y Nombres</th>
                                 <th>Justificación</th>
-                                <th>Fecha</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
                                 <th>Hora Inicio</th>
                                 <th>Hora Final</th>
                                 <th></th>
@@ -93,6 +94,9 @@ var tablaJustificaciones= $('#justificaciones-table').DataTable({
             { data: 'empleado', name: 'empleado' },
             { data: 'justificacion', name: 'justificacion', orderable: false, searchable: false},
             { data: 'fecha', name: 'fecha', render: function(data,type){
+                return data.substr(8,2)+"-"+data.substr(5,2)+"-"+data.substr(0,4);
+            }},
+            { data: 'fecha_final', name: 'fecha_final', render: function(data,type){
                 return data.substr(8,2)+"-"+data.substr(5,2)+"-"+data.substr(0,4);
             }},
             { data: 'hora_inicio', name: 'hora_inicio', render: function(data, type){
