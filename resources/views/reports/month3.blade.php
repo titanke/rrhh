@@ -269,10 +269,20 @@ function evaluador(attendancesList, year, month, day) {
   }
 
   if (attendancesDay.length >= 4) {
-    var str = "";
-    attendancesDay.forEach(function (hora) {
-      str += hora + "<br/>";
-    });
+      var str = "<center>";
+      var uniqueValueCount = {}; 
+      attendancesDay.forEach(function(hora) {
+        uniqueValueCount[hora] = (uniqueValueCount[hora] || 0) + 1;
+      });
+      var repeatedValue = Object.keys(uniqueValueCount).find(key => uniqueValueCount[key] === 4);
+
+      if (repeatedValue) {
+        str += "<span class='text-secondary'>" + repeatedValue + "</span>";
+      } else {
+      attendancesDay.forEach(function (hora) {
+        str += hora + "<br/>";
+      });
+    }
     return str;
   } else {
     if (attendancesDay.length > 0) {
