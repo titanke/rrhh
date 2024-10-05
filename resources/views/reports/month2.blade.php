@@ -232,6 +232,7 @@ function evaluador(attendancesList, year, month, day){
     const attencancesDay = [];
     var dayEvaluation = new Date(year, month-1, day);
 
+
     if(dayEvaluation > Date.now()){
         return "";
     }

@@ -272,8 +272,17 @@ class AttendanceController extends Controller
                 CONCAT(e.plastname," ",e.mlastname,", ",e.name) name,
                 e.regimen,
                 "'.$year.'" anio,
-                "'.$month.'" mes,
-                IFNULL(GROUP_CONCAT(a.TIMESTAMP SEPARATOR ","), "") marcas            
+                "'.$month.'" mes, 
+            IFNULL(
+                GROUP_CONCAT(
+                    CASE
+                        WHEN a.reloj = "JUSTIFICAC" THEN CONCAT(a.TIMESTAMP, "J")
+                        WHEN a.reloj = "VACACIONES" THEN CONCAT(a.TIMESTAMP, "V")
+                        ELSE a.TIMESTAMP
+                    END SEPARATOR ","
+                ),
+                ""
+            ) AS marcas            
             FROM employees AS e
             LEFT JOIN attendances AS a 
                 ON (

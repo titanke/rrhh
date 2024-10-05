@@ -173,7 +173,6 @@ function evaluador(attendancesList, year, month, day) {
 
   var dayEvaluation = new Date(year, month - 1, day);
 
-
   if (dayEvaluation > Date.now()) {
     return "";
   }
@@ -181,6 +180,7 @@ function evaluador(attendancesList, year, month, day) {
     const diasConMasAsistencias = new Array(31).fill(0);
 
     attendances.forEach(attendance => {
+      
         const timestamp = new Date(attendance);
         const hours = timestamp.getHours();
         const minutes = timestamp.getMinutes();
@@ -188,6 +188,7 @@ function evaluador(attendancesList, year, month, day) {
         const rango1Limite = 10;
         const rango2Limite = 5;
 
+    
         if (day === 32) {
             if (hours === 8 && minutes > 0) {
                 totalMinutes += Math.min(minutes, rango1Limite);
@@ -199,6 +200,7 @@ function evaluador(attendancesList, year, month, day) {
         if (day === 33) {
             diasConMasAsistencias[dayOfMonth - 1]++;
         }
+
     });
 
     if (day === 32) {
@@ -215,10 +217,16 @@ function evaluador(attendancesList, year, month, day) {
 
 
   attendances.forEach(function (fecha) {
-    const date = new Date(fecha);
+    //const date = new Date(fecha);
+    const fechaid = fecha.replace(/[A-Z]$/, '');
+    const date = new Date(fechaid);    
     if (date.getDate() == day) {
-      attendancesDay.push(fecha.substring(11, 16));
-
+      if (/[A-Z]$/.test(fecha)) {
+        attendancesDay.push(fecha.slice(-1));
+    } else {
+        const hora = fecha.substring(11, 16);
+        attendancesDay.push(hora);
+    }  
     }
   });
 
@@ -228,14 +236,24 @@ function evaluador(attendancesList, year, month, day) {
 
   if (dayEvaluation.getDay() == 0 || dayEvaluation.getDay() == 6) {
     if (attendancesDay.length >= 4) {
-      var str = "";
-      attendancesDay.forEach(function (hora) {
+    var str = "<center>";
+    var uniqueValueCount = {}; 
+    attendancesDay.forEach(function(hora) {
+      uniqueValueCount[hora] = (uniqueValueCount[hora] || 0) + 1;
+    });
+    var repeatedValue = Object.keys(uniqueValueCount).find(key => uniqueValueCount[key] === 4);
+
+    if (repeatedValue) {
+      str += "<span class='text-secondary'>" + repeatedValue + "</span>";
+    } else {
+      attendancesDay.forEach(function(hora) {
         str += hora + "<br/>";
       });
-      return str;
-    } else {
+    }
+  return str + "</center>";
+}else {
       if (attendancesDay.length > 0) {
-        var str = "";
+        var str = "";        
         attendancesDay.forEach(function (hora) {
           str += hora + "<br>";
         });
@@ -249,7 +267,6 @@ function evaluador(attendancesList, year, month, day) {
       }
     }
   }
-
 
   if (attendancesDay.length >= 4) {
     var str = "";
