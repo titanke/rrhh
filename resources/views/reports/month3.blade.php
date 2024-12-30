@@ -217,7 +217,6 @@ function evaluador(attendancesList, year, month, day) {
 
 
   attendances.forEach(function (fecha) {
-    //const date = new Date(fecha);
     const fechaid = fecha.replace(/[A-Z]$/, '');
     const date = new Date(fechaid);    
     if (date.getDate() == day) {
@@ -244,7 +243,7 @@ function evaluador(attendancesList, year, month, day) {
     var repeatedValue = Object.keys(uniqueValueCount).find(key => uniqueValueCount[key] === 4);
 
     if (repeatedValue) {
-      str += "<span class='text-secondary'>" + repeatedValue + "</span>";
+      str += "<span class='text-info'>" + "X" + "</span>";
     } else {
       attendancesDay.forEach(function(hora) {
         str += hora + "<br/>";

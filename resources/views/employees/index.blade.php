@@ -24,6 +24,7 @@
                                 <th>Nombres</th>
                                 <th>Cargo</th>
                                 <th>Régimen</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                     </table>
@@ -71,7 +72,9 @@ var tablaEmployees = $('#employees-table').DataTable({
             { data: 'name', name: 'name'},
             { data: 'position', name: 'position', orderable: false, searchable: false},
             { data: 'regimen', name: 'regimen', orderable: false, searchable: false},
-
+            { data: 'id', name: 'id', orderable: false, searchable: false, render: function(data,type){
+            return "<a onclick='sincronizar("+data+")' class='btn btn-alert' id='btn_sync"+data+"'><i class='fas fa-fw fa-trash' id='fa_icon"+data+"'></i> Eliminar</a>";
+        }},
         ],
         order: [[1, 'asc'], [2, 'asc'], [3, 'asc']],
         columnDefs: [{
